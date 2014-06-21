@@ -42,7 +42,8 @@ public class TwitterListener implements StatusListener, Subject {
 
   @Override // implementing method defined in Subject interface
   public void notifyObservers(String text) {
-    // you need to write some codes here 
+    // you need to write some codes here
+
   }
 
   @Override // implementing method defined in Subject interface
@@ -56,8 +57,20 @@ public class TwitterListener implements StatusListener, Subject {
   @Override  // implementing method defined in Subject interface
   public boolean registerObserver(Observer observer, String track) {
     boolean result = false;
-    // you need to write some codes here 
-
+    // you need to write some codes here
+    Set<String> subscriptions = new HashSet<String>();
+    if (!mapObservers.containsKey(observer)) {
+        subscriptions.add(track);
+        mapObservers.put(observer, subscriptions);
+        result = true;
+    } else {
+        subscriptions = (HashSet)mapObservers.get(observer);
+        if (!subscriptions.contains(track)) {
+            subscriptions.add(track);
+            mapObservers.put(observer, subscriptions);
+            result = true;
+        }
+    }
     return result;
   }
 }
