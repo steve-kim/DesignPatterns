@@ -50,7 +50,8 @@ public class TwitterListener implements StatusListener, Subject {
   public boolean removeObserver(Observer observer) {
     boolean result = false;
     // you need to write some codes here 
-
+    mapObservers.remove(observer);
+    result = true;
     return result;
   }
 
