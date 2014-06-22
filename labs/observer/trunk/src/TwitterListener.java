@@ -13,6 +13,8 @@ public class TwitterListener implements StatusListener, Subject {
   @Override 
   public void onStatus(Status status) {
     // you need to write some codes here
+    System.out.println("OnStatus() called");
+    System.out.println(status.getText());
     notifyObservers(status.getText());
   }
 
@@ -45,12 +47,20 @@ public class TwitterListener implements StatusListener, Subject {
   public void notifyObservers(String text) {
     // you need to write some codes here
     //Set<String> tweets = new HashSet<String>();
+    int matchCounter = 0;
+    System.out.println("notifyObservers() called");
     for (Observer user : mapObservers.keySet()) {
         Set<String> tweets = mapObservers.get(user);
         for (String filter : tweets) {
+            //Tweet must contain ALL of the terms this user has subscribed to
             if (text.contains(filter)) {
-                user.update(text);
-                break;
+                matchCounter++;
+                if (matchCounter == tweets.size()) {
+                    System.out.println("Calling user update");
+                    user.update(text);
+                }
+                else
+                    break;
             }
         }
     }
