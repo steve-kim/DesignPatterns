@@ -69,9 +69,12 @@ public class TwitterListener implements StatusListener, Subject {
   @Override // implementing method defined in Subject interface
   public boolean removeObserver(Observer observer) {
     boolean result = false;
-    // you need to write some codes here 
-    mapObservers.remove(observer);
-    result = true;
+    // you need to write some codes here
+    if (mapObservers.containsKey(observer)) {
+        System.out.println("Removing user");
+        mapObservers.remove(observer);
+        result = true;
+    }
     return result;
   }
 
