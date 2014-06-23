@@ -53,15 +53,17 @@ public class TwitterListener implements StatusListener, Subject {
         Set<String> tweets = mapObservers.get(user);
         for (String filter : tweets) {
             //Tweet must contain ALL of the terms this user has subscribed to
-            if (text.contains(filter)) {
+            if (text.toLowerCase().contains(filter.toLowerCase())) {
                 matchCounter++;
                 if (matchCounter == tweets.size()) {
                     System.out.println("Calling user update");
                     user.update(text);
+                    matchCounter = 0;
                 }
-                else
-                    break;
-            }
+//                else
+//                    break;
+            } else
+                continue;
         }
     }
   }
@@ -97,4 +99,5 @@ public class TwitterListener implements StatusListener, Subject {
     }
     return result;
   }
+
 }
