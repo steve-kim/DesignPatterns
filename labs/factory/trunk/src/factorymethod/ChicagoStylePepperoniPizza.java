@@ -1,6 +1,6 @@
 package factorymethod;
 
-public class ChicagoStylePepperoniPizza {
+public class ChicagoStylePepperoniPizza extends Pizza {
 	public ChicagoStylePepperoniPizza() {
 		name = "Chicago Style Pepperoni Pizza";
 		dough = "Extra Thick Crust Dough";

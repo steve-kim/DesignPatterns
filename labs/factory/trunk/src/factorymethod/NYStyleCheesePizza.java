@@ -1,6 +1,6 @@
 package factorymethod;
 
-public class NYStyleCheesePizza { // This is a type of product
+public class NYStyleCheesePizza extends Pizza { // This is a type of product
 
 	public NYStyleCheesePizza() { 
 		name = "NY Style Sauce and Cheese Pizza";
