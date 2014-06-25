@@ -1,6 +1,6 @@
 package abstractfactory;
 
-public class ThinCrustDough {
+public class ThinCrustDough implements Dough {
 	public String toString() {
 		return "Thin Crust Dough";
 	}

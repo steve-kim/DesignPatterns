@@ -1,6 +1,6 @@
 package abstractfactory;
 
-public class ChicagoPizzaStore {
+public class ChicagoPizzaStore extends PizzaStore {
 
 	protected Pizza createPizza(String item) {
 		

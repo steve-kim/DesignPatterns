@@ -1,6 +1,6 @@
 package abstractfactory;
 
-public class Mushroom {
+public class Mushroom implements Veggies {
 
 	public String toString() {
 		return "Mushrooms";

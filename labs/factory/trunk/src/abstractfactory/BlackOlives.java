@@ -1,6 +1,6 @@
 package abstractfactory;
 
-public class BlackOlives {
+public class BlackOlives implements Veggies {
 
 	public String toString() {
 		return "Black Olives";
