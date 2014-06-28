@@ -36,6 +36,8 @@ class AirportScraper implements AirportScraperInterface {
 	    String airportUrl = "http://www.world-airport-codes.com/dist/?";
       String completeUrl =
           airportUrl + "a1=" + origin + "&" + "a2=" + dest;
+      //Adding code to make HTTP request go through
+      System.setProperty("http.agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
       URL kUrl = new URL( completeUrl );
       StringBuilder sb = new StringBuilder();
       String str = null;
