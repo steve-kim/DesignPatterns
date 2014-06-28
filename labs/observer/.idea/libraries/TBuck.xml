@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="TBuck">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/trunk/dist/TBuck.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
