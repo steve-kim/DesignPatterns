@@ -35,11 +35,12 @@ public class InstrumentedAirportScraper implements AirportScraperInterface
 
         //This sorts the HashMap
         sorted_map.putAll(searchFrequency);
-        HashSet<String> sorted_keys = (HashSet)sorted_map.keySet();
+        Set<String> sorted_keys = sorted_map.keySet();
         Iterator<String> iterator = sorted_keys.iterator();
 
         while (iterator.hasNext()) {
-            results.add(iterator.next());
+            String searchTerm = iterator.next();
+            results.add(searchTerm + ":" + searchFrequency.get(searchTerm).toString());
         }
 
         return results;
@@ -55,11 +56,11 @@ public class InstrumentedAirportScraper implements AirportScraperInterface
         @Override
         public int compare(String a, String b) {
             if (base.get(a) < base.get(b))
-                return -1;
+                return 1;
             else if (base.get(a) == base.get(b))
                 return a.compareTo(b);
             else
-                return 1;
+                return -1;
         }
     }
 
