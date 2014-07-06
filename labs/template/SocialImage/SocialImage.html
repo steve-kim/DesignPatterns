@@ -112,19 +112,13 @@
       }
       AdvancedDrawer.prototype.resizeImages = function(id, which) {
 	var initialArea = getTotalArea();
-	/*for (var i = 0; i < divs.length; i++) {
-		var imgs = divs[i].getElementsByTagName("img");
-		var h = imgs[0].height;
-		var w = imgs[0].width;
-		initialArea = (h*w) + initialArea;
-	}
-	//var initialArea = getTotalArea(imgs);*/
 	console.log("Initial Total Area: " + initialArea);
 	
 	for (var i = 0; i < divs.length; i++) {
 		var imgs = divs[i].getElementsByTagName("img");
 		var height = imgs[0].height;
 		var width = imgs[0].width;
+		var delta = 0.1 * height * width;
 		var area = 0;
 		if (divs[i].id == id) {
 			if (which == 1) {
@@ -132,29 +126,38 @@
 				console.log("Total Area: " + area);	
 				imgs[0].setAttribute("width", (width*Math.sqrt(1.1)));
 				imgs[0].setAttribute("height", (height*Math.sqrt(1.1)));
-				decrementImages(imgs[0]);
+				decrementImages(imgs[0], delta, area);
 				area = getTotalArea();
 				console.log("Total Area Final: " + area);
 			}
 		}
 	}
 
-	function decrementImages(currentImage) {
+	function decrementImages(currentImage, delta, area) {
+		var remainingArea = getRemainingArea(currentImage);
+		var decreaseAmount = (remainingArea - delta)/remainingArea;
 		for (var i = 0; i < divs.length; i++) {
 			var imgs = divs[i].getElementsByTagName("img");
 			if (imgs[0] != currentImage) {
-				imgs[0].setAttribute("height", (imgs[0].height * (Math.sqrt(0.9)/imgs.length)));		
-				imgs[0].setAttribute("width", (imgs[0].width * (Math.sqrt(0.9)/imgs.length)));		
+				imgs[0].setAttribute("height", (imgs[0].height * Math.sqrt(decreaseAmount)));		
+				imgs[0].setAttribute("width", (imgs[0].width * Math.sqrt(decreaseAmount)));		
 			}
 		}
 		
-		/*for (var i = 1; i < currentImage.length; i++) {
-			//var imgs = divs[i].getElementsByTagName("img");
-			//if (imgs[i] != currentImage) {
-				imgs[i].setAttribute("height", (imgs[i].height * (Math.sqrt(0.9)/imgs.length)));		
-				imgs[i].setAttribute("width", (imgs[i].width * (Math.sqrt(0.9)/imgs.length)));		
+	}
+
+	function getRemainingArea(currentImage) {
+		var area = 0;
+		for (var i = 0; i < divs.length; i++) {
+			var imgs = divs[i].getElementsByTagName("img");
+			if (imgs[0] != currentImage) {
+				var h = imgs[0].height;
+				var w = imgs[0].width;
+				area = (h*w) + area;
 			}
-		}*/
+		}
+		
+		return area;
 	}
 
 	function getTotalArea(imgs) {
@@ -168,10 +171,98 @@
 	
 		return area;
 	}
+
+	
 }
 
 
-      AdvancedDrawer.prototype.placeImages = function() {}
+      AdvancedDrawer.prototype.placeImages = function() {
+	divs.sort(sortImgBySize);
+	for (var i = 0; i<divs.length; i++) {
+		var imgs = divs[i].getElementsByTagName("img");
+		var h = imgs[0].height;
+		var w = imgs[0].width;
+
+		var newTopBoundary = 0;
+		var newLeftBoundary = 0;
+		var newRightBoundary = 0;
+		var newBottomBoundary = 0;
+	
+		var loopNumber = 1;
+		var imagesPerSide = 3;
+		var imageCount = 2;
+
+
+		var first = true;
+
+		var right = true;
+		var left = false;
+		var up = false;
+		var down = false;
+		
+		if (i==0) {
+			divs[i].style.top = ((maxHeight/2) + (h/2)) + "px";
+			divs[i].style.left = ((maxWidth/2) - (w/2)) + "px";
+
+			newTopBoundary = (maxHeight/2) + (h/2);
+			newLeftBoundary = (maxWidth/2) - (w/2);
+			newRightBoundary = (maxWidth/2) + (w/2);
+			newBottomBoundary = (maxHeight/2) - (h/2);
+		} else if (right){
+			divs[i].style.left = (newRightBoundary) + "px";
+			divs[i].style.top = (newTopBoundary) + "px";
+
+			newRightBoundary = newRightBoundary + imgs[0].width;
+
+			imageCount = imageCount + 1;
+			if (imageCount == imagesPerSide) {
+				if (first) {
+					imageCount = 2;
+					first = false;
+				}
+				else
+					imageCount = 0;
+				right = false;
+				down = true;
+			}
+		} else if (left) {
+			divs[i].style.left = (newLeftBoundary - imgs[0].width) + "px";
+			divs[i].style.top = (newBottomBoundary) + "px";
+
+			newLeftBoundary = newLeftBoundary - imgs[0].width; 
+			
+			imageCount = imageCount + 1;
+			if (imageCount == imagesPerSide) {
+				imageCount = 0;
+				left = false;
+				up = true;
+			}
+		} else if (up) {
+			divs[i].style.top = (newTopBoundary + imgs[0].height) + "px";
+			divs[i].style.left = (newLeftBoundary) + "px";
+
+			newTopBoundary = newTopBoundary + imgs[0].height;
+			imageCount = imageCount + 1;
+			if (imageCount == imagesPerSide) {
+				imageCount = 0;
+				up = false;
+				right = true;
+			}
+		} else if (down) {
+			divs[i].style.top = (newBottomBoundary) + "px";
+			divs[i].style.left = (newLeftBoundary) + "px";
+		
+			newBottomBoundary = newBottomBoundary - imgs[0].height;
+			imageCount = imageCount + 1;
+			if (imageCount == imagesPerSide) {
+				imageCount = 0;
+				down = false;
+				left = true;
+			}
+		}
+	}
+
+}
 
 
       function PersonalDrawer() {}
