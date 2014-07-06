@@ -95,7 +95,7 @@
               rowHeight = height; 
             }
           }
-
+	
           if (isTooBigImgs) {
             for (var i = 0; i < divs.length; i++) {
               var imgs = divs[i].getElementsByTagName("img");
@@ -110,7 +110,63 @@
 
       function AdvancedDrawer() {
       }
-      AdvancedDrawer.prototype.resizeImages = function(id, which) {}
+      AdvancedDrawer.prototype.resizeImages = function(id, which) {
+	var initialArea = getTotalArea();
+	/*for (var i = 0; i < divs.length; i++) {
+		var imgs = divs[i].getElementsByTagName("img");
+		var h = imgs[0].height;
+		var w = imgs[0].width;
+		initialArea = (h*w) + initialArea;
+	}
+	//var initialArea = getTotalArea(imgs);*/
+	console.log("Initial Total Area: " + initialArea);
+	
+	for (var i = 0; i < divs.length; i++) {
+		var imgs = divs[i].getElementsByTagName("img");
+		var height = imgs[0].height;
+		var width = imgs[0].width;
+		var area = 0;
+		if (divs[i].id == id) {
+			if (which == 1) {
+				area = getTotalArea();
+				console.log("Total Area: " + area);	
+				imgs[0].setAttribute("width", (width*Math.sqrt(1.1)));
+				imgs[0].setAttribute("height", (height*Math.sqrt(1.1)));
+				area = getTotalArea();
+				console.log("Total Area Final: " + area);
+			//	decrementImages(imgs[0]);
+			}
+		}
+	}
+
+	function decrementImages(currentImage) {
+		for (var i = 0; i < divs.length; i++) {
+			var imgs = divs[i].getElementsByTagName("img");
+			if (imgs[i] != currentImage) {
+				
+			}
+		}
+	}
+
+	function getTotalArea(imgs) {
+	/*	var area = 0;
+		for (var i=0; i<imgs.length; i++) {
+			area = (imgs[i].height * imgs[i].width) + area
+		}
+		
+		return area; */
+	var area = 0;
+	for (var i = 0; i < divs.length; i++) {
+		var imgs = divs[i].getElementsByTagName("img");
+		var h = imgs[0].height;
+		var w = imgs[0].width;
+		area = (h*w) + area;
+	}
+	
+	return area;
+
+	}
+}
 
 
       AdvancedDrawer.prototype.placeImages = function() {}
