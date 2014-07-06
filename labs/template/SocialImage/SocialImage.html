@@ -132,9 +132,9 @@
 				console.log("Total Area: " + area);	
 				imgs[0].setAttribute("width", (width*Math.sqrt(1.1)));
 				imgs[0].setAttribute("height", (height*Math.sqrt(1.1)));
+				decrementImages(imgs[0]);
 				area = getTotalArea();
 				console.log("Total Area Final: " + area);
-			//	decrementImages(imgs[0]);
 			}
 		}
 	}
@@ -142,29 +142,31 @@
 	function decrementImages(currentImage) {
 		for (var i = 0; i < divs.length; i++) {
 			var imgs = divs[i].getElementsByTagName("img");
-			if (imgs[i] != currentImage) {
-				
+			if (imgs[0] != currentImage) {
+				imgs[0].setAttribute("height", (imgs[0].height * (Math.sqrt(0.9)/imgs.length)));		
+				imgs[0].setAttribute("width", (imgs[0].width * (Math.sqrt(0.9)/imgs.length)));		
 			}
 		}
+		
+		/*for (var i = 1; i < currentImage.length; i++) {
+			//var imgs = divs[i].getElementsByTagName("img");
+			//if (imgs[i] != currentImage) {
+				imgs[i].setAttribute("height", (imgs[i].height * (Math.sqrt(0.9)/imgs.length)));		
+				imgs[i].setAttribute("width", (imgs[i].width * (Math.sqrt(0.9)/imgs.length)));		
+			}
+		}*/
 	}
 
 	function getTotalArea(imgs) {
-	/*	var area = 0;
-		for (var i=0; i<imgs.length; i++) {
-			area = (imgs[i].height * imgs[i].width) + area
+		var area = 0;
+		for (var i = 0; i < divs.length; i++) {
+			var imgs = divs[i].getElementsByTagName("img");
+			var h = imgs[0].height;
+			var w = imgs[0].width;
+			area = (h*w) + area;
 		}
-		
-		return area; */
-	var area = 0;
-	for (var i = 0; i < divs.length; i++) {
-		var imgs = divs[i].getElementsByTagName("img");
-		var h = imgs[0].height;
-		var w = imgs[0].width;
-		area = (h*w) + area;
-	}
 	
-	return area;
-
+		return area;
 	}
 }
 
