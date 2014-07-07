@@ -183,31 +183,38 @@
 		var h = imgs[0].height;
 		var w = imgs[0].width;
 
-		var newTopBoundary = 0;
-		var newLeftBoundary = 0;
-		var newRightBoundary = 0;
-		var newBottomBoundary = 0;
+		var newTopBoundary;
+		var newLeftBoundary;
+		var newRightBoundary;
+		var newBottomBoundary;
 	
-		var loopNumber = 1;
-		var imagesPerSide = 3;
-		var imageCount = 2;
+		var loopNumber;
+		var imagesPerSide;
+		var imageCount;
 
 
-		var first = true;
+		var first;
 
-		var right = true;
-		var left = false;
-		var up = false;
-		var down = false;
+		var right;
+		var left;
+		var up;
+		var down;
 		
 		if (i==0) {
+			loopNumber = 1;
+			imagesPerSide = 3;
+			imageCount = 2;
+
 			divs[i].style.top = ((maxHeight/2) + (h/2)) + "px";
 			divs[i].style.left = ((maxWidth/2) - (w/2)) + "px";
 
-			newTopBoundary = (maxHeight/2) + (h/2);
+			newTopBoundary = (maxHeight/2) - (h/2);
 			newLeftBoundary = (maxWidth/2) - (w/2);
 			newRightBoundary = (maxWidth/2) + (w/2);
-			newBottomBoundary = (maxHeight/2) - (h/2);
+			newBottomBoundary = (maxHeight/2) + (h/2);
+
+			first = true;
+			right = true;
 		} else if (right){
 			divs[i].style.left = (newRightBoundary) + "px";
 			divs[i].style.top = (newTopBoundary) + "px";
@@ -226,10 +233,10 @@
 				down = true;
 			}
 		} else if (left) {
-			divs[i].style.left = (newLeftBoundary - imgs[0].width) + "px";
+			divs[i].style.left = (newRightBoundary - imgs[0].width) + "px";
 			divs[i].style.top = (newBottomBoundary) + "px";
 
-			newLeftBoundary = newLeftBoundary - imgs[0].width; 
+			newRightBoundary = newRightBoundary - imgs[0].width; 
 			
 			imageCount = imageCount + 1;
 			if (imageCount == imagesPerSide) {
@@ -238,10 +245,10 @@
 				up = true;
 			}
 		} else if (up) {
-			divs[i].style.top = (newTopBoundary + imgs[0].height) + "px";
+			divs[i].style.top = (newBottomBoundary - imgs[0].height) + "px";
 			divs[i].style.left = (newLeftBoundary) + "px";
 
-			newTopBoundary = newTopBoundary + imgs[0].height;
+			newBottomBoundary = newBottomBoundary - imgs[0].height;
 			imageCount = imageCount + 1;
 			if (imageCount == imagesPerSide) {
 				imageCount = 0;
@@ -252,7 +259,7 @@
 			divs[i].style.top = (newBottomBoundary) + "px";
 			divs[i].style.left = (newLeftBoundary) + "px";
 		
-			newBottomBoundary = newBottomBoundary - imgs[0].height;
+			newBottomBoundary = newBottomBoundary + imgs[0].height;
 			imageCount = imageCount + 1;
 			if (imageCount == imagesPerSide) {
 				imageCount = 0;
