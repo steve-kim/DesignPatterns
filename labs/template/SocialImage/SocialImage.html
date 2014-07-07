@@ -352,7 +352,9 @@
 		
       }
       PersonalDrawer.prototype.placeImages = function() {
-		BasicDrawer.placeImages();
+		drawer = basicDrawer;
+		drawer.placeImages();
+		drawer = personalDrawer;
       }
 
       function redraw(id, which) {
