@@ -259,7 +259,7 @@
 
 			if ((leftBorder + width) > (topRight.x)) {
 				stateMachine.consumeEvent('changeDirection');
-				//leftBorder += width;
+				leftBorder = topRight.x;
 				topBorder += height;
 			} else  {
 				stateMachine.consumeEvent('keepDirection');
@@ -272,7 +272,7 @@
 
 			if ((topBorder + height) > (bottomRight.y)) {
 				stateMachine.consumeEvent('changeDirection');
-				//topBorder += height;
+				topBorder = bottomRight.y;
 				leftBorder -= width;
 			} else  {
 				stateMachine.consumeEvent('keepDirection');
@@ -284,7 +284,7 @@
 			xLoc = leftBorder;
 			yLoc = topBorder;
 
-			if ((leftBorder - width) < (bottomLeft.x)) {
+			if ((leftBorder) < (bottomLeft.x)) {
 				stateMachine.consumeEvent('changeDirection');
 				leftBorder -= width;
 				topBorder -= height;
@@ -297,7 +297,7 @@
 			xLoc = leftBorder;
 			yLoc = topBorder;
 
-			if ((topBorder - height) < (topLeft.y)) {
+			if ((topBorder) < (topLeft.y)) {
 				stateMachine.consumeEvent('changeDirection');
 				topBorder -= height;
 				leftBorder += width;
