@@ -15,6 +15,7 @@ package com.neoworks.connectionpool;
 
 import java.sql.*;
 import java.util.*;
+import java.util.concurrent.Executor;
 
 import org.apache.log4j.Category;
 
@@ -60,7 +61,89 @@ class ConnectionWrapper implements Connection
     }
   }
 
-  private void handleIsClosed() throws SQLException
+    @Override
+    public int getNetworkTimeout() throws SQLException {
+        handleIsClosed();
+        return realConn.getNetworkTimeout();
+    }
+
+    @Override
+    public Clob createClob() throws SQLException {
+        handleIsClosed();
+        return realConn.createClob();
+    }
+
+    @Override
+    public Blob createBlob() throws SQLException {
+        handleIsClosed();
+        return realConn.createBlob();
+    }
+
+    @Override
+    public NClob createNClob() throws SQLException {
+        handleIsClosed();
+        return realConn.createNClob();
+    }
+
+    @Override
+    public SQLXML createSQLXML() throws SQLException {
+        handleIsClosed();
+        return realConn.createSQLXML();
+    }
+
+    @Override
+    public boolean isValid(int i) throws SQLException {
+        handleIsClosed();
+        return realConn.isValid(i);
+    }
+
+    @Override
+    public String getClientInfo(String s) throws SQLException {
+        handleIsClosed();
+        return realConn.getClientInfo(s);
+    }
+
+    @Override
+    public Properties getClientInfo() throws SQLException {
+        handleIsClosed();
+        return realConn.getClientInfo();
+    }
+
+    @Override
+    public Array createArrayOf(String s, Object[] objects) throws SQLException {
+        handleIsClosed();
+        return realConn.createArrayOf(s, objects);
+    }
+
+    @Override
+    public Struct createStruct(String s, Object[] objects) throws SQLException {
+        handleIsClosed();
+        return realConn.createStruct(s, objects);
+    }
+
+    @Override
+    public void setSchema(String s) throws SQLException {
+        handleIsClosed();
+        realConn.setSchema(s);
+    }
+
+    @Override
+    public String getSchema() throws SQLException {
+        handleIsClosed();
+        return realConn.getSchema();
+    }
+
+    @Override
+    public void abort(Executor executor) throws SQLException {
+        handleIsClosed();
+    }
+
+    @Override
+    public void setNetworkTimeout(Executor executor, int i) throws SQLException {
+        handleIsClosed();
+    }
+
+    private void handleIsClosed() throws SQLException
   {
     if (isClosed)
     {
@@ -77,6 +160,11 @@ class ConnectionWrapper implements Connection
    */
   public void close() throws SQLException
   {
+      if (!autoCommit)
+          realConn.rollback();
+
+      pool.wrapperClosed(realConn);
+      isClosed = true;
   }
 
   /**
@@ -341,5 +429,15 @@ class ConnectionWrapper implements Connection
     return ( "ConnectionWrapper with real connection ["+this.realConn+"] from pool ["+this.pool+"]" );
   }
 
-  // TODO add necessary methods to implement the java.sql.Connection;
+    @Override
+    public <T> T unwrap(Class<T> tClass) throws SQLException {
+        return realConn.unwrap(tClass);
+    }
+
+    @Override
+    public boolean isWrapperFor(Class<?> aClass) throws SQLException {
+        return realConn.isWrapperFor(aClass);
+    }
+
+    // TODO add necessary methods to implement the java.sql.Connection;
 }
