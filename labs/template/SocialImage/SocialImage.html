@@ -176,106 +176,183 @@
 }
 
 
+	states = [
+		{
+			'name': 'right',
+			'events': {
+				'changeDirection': 'down',
+				'keepDirection': 'right'
+			}
+		},
+
+		{
+			'name': 'down',
+			'events': {
+				'changeDirection': 'left',
+				'keepDirection': 'down'
+			}
+		},
+
+		{
+			'name': 'left',
+			'events': {
+				'changeDirection': 'up',
+				'keepDirection': 'left'
+			}
+		},
+
+		{
+			'name': 'up',
+			'events': {
+				'changeDirection': 'right',
+				'keepDirection': 'up'
+			}
+		},
+
+		{
+			'name': 'initialState',
+			'initial': true,
+			'events': {
+				'changeDirection': 'right',
+				'keepDirection': 'right'
+			}
+		},
+
+	];
+
       AdvancedDrawer.prototype.placeImages = function() {
-	divs.sort(sortImgBySize);
-	for (var i = 0; i<divs.length; i++) {
+	divs.sort(sortImgBySize);		
+
+	stateMachine = new StateMachine(states);
+
+	for (var i=0; i<divs.length; i++) {
 		var imgs = divs[i].getElementsByTagName("img");
-		var h = imgs[0].height;
-		var w = imgs[0].width;
-
-		var newTopBoundary;
-		var newLeftBoundary;
-		var newRightBoundary;
-		var newBottomBoundary;
-	
-		var loopNumber;
-		var imagesPerSide;
-		var imageCount;
-
-
-		var first;
-
-		var right;
-		var left;
-		var up;
-		var down;
+		var currentState = stateMachine.getStatus();	
 		
-		if (i==0) {
-			loopNumber = 1;
-			imagesPerSide = 3;
-			imageCount = 2;
+		var height = imgs[0].height;
+		var width = imgs[0].width;		
 
-			divs[i].style.top = ((maxHeight/2) + (h/2)) + "px";
-			divs[i].style.left = ((maxWidth/2) - (w/2)) + "px";
+		var leftBorder;
+		var topBorder;
 
-			newTopBoundary = (maxHeight/2) - (h/2);
-			newLeftBoundary = (maxWidth/2) - (w/2);
-			newRightBoundary = (maxWidth/2) + (w/2);
-			newBottomBoundary = (maxHeight/2) + (h/2);
+		var xLoc;
+		var yLoc;
 
-			first = true;
-			right = true;
-		} else if (right){
-			divs[i].style.left = (newRightBoundary) + "px";
-			divs[i].style.top = (newTopBoundary) + "px";
+		if (currentState == 'initialState') {
+			topBorder = (maxHeight - height) / 2;
+			leftBorder = (maxWidth - width) / 2;
 
-			newRightBoundary = newRightBoundary + imgs[0].width;
-
-			imageCount = imageCount + 1;
-			if (imageCount == imagesPerSide) {
-				if (first) {
-					imageCount = 2;
-					first = false;
-				}
-				else
-					imageCount = 0;
-				right = false;
-				down = true;
-			}
-		} else if (left) {
-			divs[i].style.left = (newRightBoundary - imgs[0].width) + "px";
-			divs[i].style.top = (newBottomBoundary) + "px";
-
-			newRightBoundary = newRightBoundary - imgs[0].width; 
+			xLoc = leftBorder;
+			yLoc = topBorder;
 			
-			imageCount = imageCount + 1;
-			if (imageCount == imagesPerSide) {
-				imageCount = 0;
-				left = false;
-				up = true;
-			}
-		} else if (up) {
-			divs[i].style.top = (newBottomBoundary - imgs[0].height) + "px";
-			divs[i].style.left = (newLeftBoundary) + "px";
+			var topRight = {x: (leftBorder + width), y: (topBorder)};
+			var bottomRight = {x: (leftBorder + width), y:(topBorder + height)};
+			var bottomLeft = {x: (leftBorder), y:(topBorder + height)};
+			var topLeft = {x: (leftBorder), y:(topBorder)};
 
-			newBottomBoundary = newBottomBoundary - imgs[0].height;
-			imageCount = imageCount + 1;
-			if (imageCount == imagesPerSide) {
-				imageCount = 0;
-				up = false;
-				right = true;
+			stateMachine.consumeEvent('changeDirection');
+			leftBorder += width;
+
+		} else if (currentState == 'right') {
+			xLoc = leftBorder;
+			yLoc = topBorder;
+
+			if ((leftBorder + width) > (topRight.x)) {
+				stateMachine.consumeEvent('changeDirection');
+				//leftBorder += width;
+				topBorder += height;
+			} else  {
+				stateMachine.consumeEvent('keepDirection');
+				leftBorder += width;
 			}
-		} else if (down) {
-			divs[i].style.top = (newBottomBoundary) + "px";
-			divs[i].style.left = (newLeftBoundary) + "px";
-		
-			newBottomBoundary = newBottomBoundary + imgs[0].height;
-			imageCount = imageCount + 1;
-			if (imageCount == imagesPerSide) {
-				imageCount = 0;
-				down = false;
-				left = true;
+
+		} else if (currentState == 'down') {
+			xLoc = leftBorder;
+			yLoc = topBorder;
+
+			if ((topBorder + height) > (bottomRight.y)) {
+				stateMachine.consumeEvent('changeDirection');
+				//topBorder += height;
+				leftBorder -= width;
+			} else  {
+				stateMachine.consumeEvent('keepDirection');
+				topBorder += height;
+			}
+
+
+		} else if (currentState == 'left') {
+			xLoc = leftBorder;
+			yLoc = topBorder;
+
+			if ((leftBorder - width) < (bottomLeft.x)) {
+				stateMachine.consumeEvent('changeDirection');
+				leftBorder -= width;
+				topBorder -= height;
+			} else  {
+				stateMachine.consumeEvent('keepDirection');
+				leftBorder -= width;
+			}
+
+		} else if (currentState == 'up') {		
+			xLoc = leftBorder;
+			yLoc = topBorder;
+
+			if ((topBorder - height) < (topLeft.y)) {
+				stateMachine.consumeEvent('changeDirection');
+				topBorder -= height;
+				leftBorder += width;
+			} else  {
+				stateMachine.consumeEvent('keepDirection');
+				topBorder -= height;
 			}
 		}
-	}
 
+		divs[i].style.top = yLoc + "px";
+		divs[i].style.left = xLoc + "px";
+	}
+	
+	function StateMachine(states) {
+		this.states = states;
+		this.indexes = {};
+
+		for (var i=0; i<this.states.length; i++) {
+			this.indexes[this.states[i].name] = i;
+			if (this.states[i].initial)
+				this.currentState = this.states[i];
+		}
+
+		this.consumeEvent = function(e) {
+			if (this.currentState.events[e]) {
+				this.currentState = this.states[this.indexes[this.currentState.events[e]]];
+			}
+		}
+	
+		this.getStatus = function() {
+			return this.currentState.name;
+		}
+	}
 }
 
 
       function PersonalDrawer() {}
       PersonalDrawer.prototype.resizeImages = function(id, which) {
+	for (var i = 0; i < divs.length; i++) {
+		var imgs = divs[i].getElementsByTagName("img");
+		var height = imgs[0].height;
+		var width = imgs[0].width;
+		var delta = 0.1 * height * width;
+		var area = 0;
+		if (divs[i].id == id) {
+			if (which == 1) {
+				imgs[0].setAttribute("width", (width*Math.sqrt(1.2)));
+				imgs[0].setAttribute("height", (height*Math.sqrt(1.2)));
+			}
+		}
+	}
+		
       }
       PersonalDrawer.prototype.placeImages = function() {
+		BasicDrawer.placeImages();
       }
 
       function redraw(id, which) {
