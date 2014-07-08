@@ -82,20 +82,39 @@ public class CustomIterator {
   public static class StudentIteratorPredicated implements Iterator<Student> {
     //TODO(DP): implement this iterator as per the lab specification
     // the remove method should  throw an UnsupportedOperationException
+      Student [] studentArray;
+      private int m_position = 0;
+
+      public Iterator<Student> StudentIteratorPredicated(StudentPredicate predicate, Student[] studentArray) {
+          List<Student> studentList = Arrays.asList(studentArray);
+          for (Student student : studentList) {
+              if (!predicate.check(student))
+                  studentList.remove(student);
+          }
+
+          this.studentArray = (Student [])studentList.toArray();
+          return studentList.iterator();
+      }
 
       @Override
       public boolean hasNext() {
-          return false;
+          if (m_position < studentArray.length)
+              return true;
+          else
+              return false;
       }
 
       @Override
       public Student next() {
-          return null;
+          if (this.hasNext())
+              return studentArray[m_position];
+          else
+              return null;
       }
 
       @Override
       public void remove() {
-
+          throw new UnsupportedOperationException();
       }
   }
 
