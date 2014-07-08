@@ -1,4 +1,6 @@
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 class Student {
@@ -36,6 +38,40 @@ public class CustomIterator {
   public static class StudentIteratorBySchool implements Iterator<Student> {
     //TODO(DP): implement this iterator as per the lab specification
     // the remove method should  throw an UnsupportedOperationException
+      Student [] studentArray;
+      private int m_position = 0;
+
+      public Iterator<Student> StudentIteratorBySchool(Student [] studentArray, String schoolFilter) {
+          List<Student> studentList = Arrays.asList(studentArray);
+          for (Student student : studentList) {
+              if (!((student.school).equals(schoolFilter)))
+                  studentList.remove(student);
+          }
+          this.studentArray = (Student [])studentList.toArray();
+
+          return studentList.iterator();
+      }
+
+      @Override
+      public boolean hasNext() {
+          if (m_position < studentArray.length)
+              return true;
+          else
+              return false;
+      }
+
+      @Override
+      public Student next() {
+          if (this.hasNext())
+              return studentArray[m_position];
+          else
+              return null;
+      }
+
+      @Override
+      public void remove() {
+          throw new UnsupportedOperationException();
+      }
   }
 
   interface StudentPredicate {
@@ -46,6 +82,21 @@ public class CustomIterator {
   public static class StudentIteratorPredicated implements Iterator<Student> {
     //TODO(DP): implement this iterator as per the lab specification
     // the remove method should  throw an UnsupportedOperationException
+
+      @Override
+      public boolean hasNext() {
+          return false;
+      }
+
+      @Override
+      public Student next() {
+          return null;
+      }
+
+      @Override
+      public void remove() {
+
+      }
   }
 
 }
