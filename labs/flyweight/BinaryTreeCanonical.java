@@ -1,11 +1,8 @@
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 public class BinaryTreeCanonical {
+
+  private static Hashtable<Integer,BinaryTreeNode> flyweights = new Hashtable<Integer,BinaryTreeNode>();
 
   static class BinaryTreeNode {
     int key;
@@ -17,14 +14,57 @@ public class BinaryTreeCanonical {
       this.left = l;
       this.right = r;
       this.cachedHash = null;
+
     }
+
+    @Override
+    public boolean equals(Object o) {
+       return true;
+    }
+
+    @Override
+    public int hashCode() {
+        System.out.println("hashCode function called");
+        int totalIntegerValues = Integer.MAX_VALUE;
+        int hash = 0;
+
+        hash = key % totalIntegerValues;
+
+        if (left != null)
+            hash = hash % left.key;
+
+        if (right != null)
+            hash = hash % right.key;
+
+        return hash;
+    }
+
   }
 
   static BinaryTreeNode getCanonical(BinaryTreeNode n) {
-    return null;
+    BinaryTreeNode temp = null;
+    int hashedCode = n.hashCode();
+    if (flyweights.isEmpty())
+        flyweights.put(hashedCode,n);
+
+    if (flyweights.contains(n))
+        temp = flyweights.get(hashedCode);
+    else {
+        flyweights.put(n.hashCode(), n);
+        temp = flyweights.get(hashedCode);
+    }
+
+    return temp;
   } 
 
   static int numberOfFlyweightNodes() {
-    return -1;
+    return flyweights.size();
   }
+
+  /*private boolean checkIfFlyweightExists(BinaryTreeNode check) {
+      if (flyweights.containsKey(check))
+          return true;
+      else
+          return false;
+  }*/
 }
