@@ -13,7 +13,7 @@ public class BinaryTreeCanonical {
       this.key = k;
       this.left = l;
       this.right = r;
-      this.cachedHash = null;
+      this.cachedHash = hashCode();
 
     }
 
@@ -24,17 +24,17 @@ public class BinaryTreeCanonical {
 
     @Override
     public int hashCode() {
-        System.out.println("hashCode function called");
+        //System.out.println("hashCode function called");
         int totalIntegerValues = Integer.MAX_VALUE;
         int hash = 0;
 
         hash = key % totalIntegerValues;
 
         if (left != null)
-            hash = hash % left.key;
+            hash = hash * left.key;
 
         if (right != null)
-            hash = hash % right.key;
+            hash = hash * right.key;
 
         return hash;
     }
@@ -44,12 +44,16 @@ public class BinaryTreeCanonical {
   static BinaryTreeNode getCanonical(BinaryTreeNode n) {
     BinaryTreeNode temp = null;
     int hashedCode = n.hashCode();
-    if (flyweights.isEmpty())
+    if (flyweights.isEmpty()) {
+        System.out.println("Flyweight list is empty");
         flyweights.put(hashedCode,n);
+    }
 
-    if (flyweights.contains(n))
+
+    if (flyweights.containsKey(n.hashCode()))
         temp = flyweights.get(hashedCode);
     else {
+        System.out.println("Adding another flyweight...");
         flyweights.put(n.hashCode(), n);
         temp = flyweights.get(hashedCode);
     }
@@ -61,10 +65,4 @@ public class BinaryTreeCanonical {
     return flyweights.size();
   }
 
-  /*private boolean checkIfFlyweightExists(BinaryTreeNode check) {
-      if (flyweights.containsKey(check))
-          return true;
-      else
-          return false;
-  }*/
 }
