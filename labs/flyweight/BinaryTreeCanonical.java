@@ -27,16 +27,18 @@ public class BinaryTreeCanonical {
         //System.out.println("hashCode function called");
         int totalIntegerValues = Integer.MAX_VALUE;
         int hash = 0;
+        int leftHash = 0;
+        int rightHash = 0;
 
-        hash = key % totalIntegerValues;
+        hash = key * 31;
 
         if (left != null)
-            hash = hash * left.key;
+            leftHash = left.hashCode();
 
         if (right != null)
-            hash = hash * right.key;
+            rightHash = right.hashCode();
 
-        return hash;
+        return hash + leftHash + rightHash;
     }
 
   }
