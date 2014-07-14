@@ -1,5 +1,5 @@
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.lang.reflect.Array;
+import java.util.*;
 
 class Student {
   public double GPA;
@@ -36,6 +36,49 @@ public class CustomIterator {
   public static class StudentIteratorBySchool implements Iterator<Student> {
     //TODO(DP): implement this iterator as per the lab specification
     // the remove method should  throw an UnsupportedOperationException
+      Student [] studentArray;
+      private int m_position = 0;
+
+      public StudentIteratorBySchool(Student[] studentArray, String schoolFilter) {
+          List<Student> studentList = new ArrayList<Student>();
+          for (Student student : studentArray) {
+              if (((student.school).equals(schoolFilter)))
+                  studentList.add(student);
+          }
+
+          this.studentArray = new Student[studentList.size()];
+          int i = 0;
+
+          for (Student student: studentList) {
+              this.studentArray[i] = student;
+              i++;
+          }
+
+      }
+
+      @Override
+      public boolean hasNext() {
+          if (m_position < studentArray.length)
+              return true;
+          else
+              return false;
+      }
+
+      @Override
+      public Student next() {
+          if (this.hasNext()) {
+              Student nextStudent = studentArray[m_position];
+              m_position++;
+              return nextStudent;
+          }
+          else
+              return null;
+      }
+
+      @Override
+      public void remove() {
+          throw new UnsupportedOperationException();
+      }
   }
 
   interface StudentPredicate {
@@ -46,6 +89,48 @@ public class CustomIterator {
   public static class StudentIteratorPredicated implements Iterator<Student> {
     //TODO(DP): implement this iterator as per the lab specification
     // the remove method should  throw an UnsupportedOperationException
+      Student [] studentArray;
+      private int m_position = 0;
+
+      public StudentIteratorPredicated(StudentPredicate predicate, Student[] studentArray) {
+          List<Student> studentList = new ArrayList<Student>();
+          for (Student student : studentArray) {
+              if (predicate.check(student))
+                  studentList.add(student);
+          }
+
+          this.studentArray = new Student[studentList.size()];
+          int i = 0;
+
+          for (Student student: studentList) {
+              this.studentArray[i] = student;
+              i++;
+          }
+      }
+
+      @Override
+      public boolean hasNext() {
+          if (m_position < studentArray.length)
+              return true;
+          else
+              return false;
+      }
+
+      @Override
+      public Student next() {
+          if (this.hasNext()) {
+              Student nextStudent = studentArray[m_position];
+              m_position++;
+              return nextStudent;
+          }
+          else
+              return null;
+      }
+
+      @Override
+      public void remove() {
+          throw new UnsupportedOperationException();
+      }
   }
 
 }
