@@ -20,7 +20,7 @@ public class TestMovieRental {
 
         M1 = new Movie("Oz The Great and Powerful", Movie.NEW_RELEASE);
         M2 = new Movie("The Dark Knight", Movie.REGULAR);
-        M3 = new Movie("Wreck-It Ralph", Movie.CHILDRENS);
+        M3 = new Movie("Wreck-it Ralph", Movie.CHILDRENS);
     }
     private String getAnswer1() {
         StringBuilder ans = new StringBuilder("Rental Record for John\n");
@@ -67,7 +67,7 @@ public class TestMovieRental {
         Date end1 = new Date(2013, 7, 12);
         Date end2 = new Date(2013, 7, 19);
         C2.addRental(new Rental(M1, new DateRange(start, end1)));
-        C2.addRental(new Rental(M1, new DateRange(start, end2)));
+        C2.addRental(new Rental(M3, new DateRange(start, end2)));
         String ans = getAnswer2();
         assertTrue(ans.equals(C2.statement())); 
     }

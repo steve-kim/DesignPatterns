@@ -16,7 +16,7 @@ public class Main {
         
         M1 = new Movie("Oz The Great and Powerful", Movie.NEW_RELEASE);
         M2 = new Movie("The Dark Knight", Movie.REGULAR);
-        M3 = new Movie("Wreck-It Ralph", Movie.CHILDRENS);
+        M3 = new Movie("Wreck-it Ralph", Movie.CHILDRENS);
 
         Date start = new Date(2013, 7, 1);
         Date end1 = new Date(2013, 7, 6);
@@ -32,7 +32,7 @@ public class Main {
         end1 = new Date(2013, 7, 12);
         end2 = new Date(2013, 7, 19);
         C2.addRental(new Rental(M1, new DateRange(start, end1)));
-        C2.addRental(new Rental(M1, new DateRange(start, end2)));
+        C2.addRental(new Rental(M3, new DateRange(start, end2)));
         System.out.println(C2.statement()); 
         System.out.println();
 
