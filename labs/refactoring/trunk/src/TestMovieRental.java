@@ -1,5 +1,7 @@
 import org.junit.*;
+
 import static org.junit.Assert.*;
+
 import java.util.Date;
 
 public class TestMovieRental {
@@ -22,31 +24,6 @@ public class TestMovieRental {
         M2 = new Movie("The Dark Knight", Movie.REGULAR);
         M3 = new Movie("Wreck-it Ralph", Movie.CHILDRENS);
     }
-    private String getAnswer1() {
-        StringBuilder ans = new StringBuilder("Rental Record for John\n");
-        ans.append("\tOz The Great and Powerful\t15.0\n");
-        ans.append("\tThe Dark Knight\t3.5\n");
-        ans.append("\tWreck-it Ralph\t3.0\n");
-        ans.append("Amount owed is 21.5\n");
-        ans.append("You earned 4 frequent renter points");
-        return ans.toString();
-    }
-    private String getAnswer2() {
-        StringBuilder ans = new StringBuilder("Rental Record for Mary\n");
-        ans.append("\tOz The Great and Powerful\t3.0\n");
-        ans.append("\tWreck-it Ralph\t9.0\n");
-        ans.append("Amount owed is 12.0\n");
-        ans.append("You earned 2 frequent renter points");
-        return ans.toString();
-    }
-    private String getAnswer3() {
-        StringBuilder ans = new StringBuilder("Rental Record for Manny\n");
-        ans.append("\tThe Dark Knight\t2.0\n");
-        ans.append("\tWreck-it Ralph\t1.5\n");
-        ans.append("Amount owed is 3.5\n");
-        ans.append("You earned 2 frequent renter points");
-        return ans.toString();
-    }
     @Test 
     public void test1() {
         Date start = new Date(2013, 7, 1);
@@ -57,7 +34,13 @@ public class TestMovieRental {
         C1.addRental(new Rental(M1, new DateRange(start, end1)));
         C1.addRental(new Rental(M2, new DateRange(start, end2)));
         C1.addRental(new Rental(M3, new DateRange(start, end3)));
-        String ans = getAnswer1();
+		StringBuilder ans1 = new StringBuilder("Rental Record for John\n");
+		ans1.append("\tOz The Great and Powerful\t15.0\n");
+		ans1.append("\tThe Dark Knight\t3.5\n");
+		ans1.append("\tWreck-it Ralph\t3.0\n");
+		ans1.append("Amount owed is 21.5\n");
+		ans1.append("You earned 4 frequent renter points");
+        String ans = ans1.toString();
         assertTrue(ans.equals(C1.statement())); 
     }
 
@@ -68,7 +51,12 @@ public class TestMovieRental {
         Date end2 = new Date(2013, 7, 19);
         C2.addRental(new Rental(M1, new DateRange(start, end1)));
         C2.addRental(new Rental(M3, new DateRange(start, end2)));
-        String ans = getAnswer2();
+		StringBuilder ans1 = new StringBuilder("Rental Record for Mary\n");
+		ans1.append("\tOz The Great and Powerful\t3.0\n");
+		ans1.append("\tWreck-it Ralph\t9.0\n");
+		ans1.append("Amount owed is 12.0\n");
+		ans1.append("You earned 2 frequent renter points");
+        String ans = ans1.toString();
         assertTrue(ans.equals(C2.statement())); 
     }
 
@@ -79,7 +67,12 @@ public class TestMovieRental {
         Date end2 = new Date(2013, 6, 2);
         C3.addRental(new Rental(M2, new DateRange(start, end1)));
         C3.addRental(new Rental(M3, new DateRange(start, end2)));
-        String ans = getAnswer3();
+		StringBuilder ans1 = new StringBuilder("Rental Record for Manny\n");
+		ans1.append("\tThe Dark Knight\t2.0\n");
+		ans1.append("\tWreck-it Ralph\t1.5\n");
+		ans1.append("Amount owed is 3.5\n");
+		ans1.append("You earned 2 frequent renter points");
+        String ans = ans1.toString();
         assertTrue(ans.equals(C3.statement())); 
     }
 }

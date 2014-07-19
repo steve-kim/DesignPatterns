@@ -49,7 +49,7 @@ class Customer {
     	int result = 0;
     	
     	for (Rental each: _rentals) {
-    		result += each.getFrequentRenterPoints(result);
+    		result += each.getFrequentRenterPoints(each);
     	}
     	return result;
     }
@@ -58,7 +58,7 @@ class Customer {
 	 * @deprecated Use {@link Rental#getFrequentRenterPoints(int)} instead
 	 */
 	private int getFrequentRenterPoints(Rental each, int frequentRenterPoints) {
-		return each.getFrequentRenterPoints(frequentRenterPoints);
+		return each.getFrequentRenterPoints(each);
 	}
 
 	/**
