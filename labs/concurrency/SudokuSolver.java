@@ -24,11 +24,18 @@ public class SudokuSolver {
   public static String solve( String s ) {
         String result = null;
 	    //TODOBEGIN(DP)
-      System.out.println("Puzzle to solve: " + s);
+        Cache cache = Cache.getInstance();
+        System.out.println("Cache contains: " + cache.get(s));
+        if (cache.contains(s)) {
+            return cache.get(s);
+        } else {
+            cache.put(s, "");
+        }
+
         int [][] puzzle = readInput(s);
-      System.out.println("Puzzle to solve: " + s);
         solvePuzzle(0, 0, puzzle);
         result = matrixToString(puzzle);
+        cache.put(s, result);
         System.out.println("Solved puzzle: " + result);
 	    //TODOEND(DP)
 	    return result;
@@ -56,6 +63,7 @@ public class SudokuSolver {
         cells[i][j] = 0; // reset on backtrack
         return false;
     }
+
 	//TODOEND(DP)
 
   public static boolean isLegalSolution( String solution, 
@@ -65,6 +73,7 @@ public class SudokuSolver {
     int [][] initialConfigMatrix = readInput( initialConfig );
 
     if ( !isValid (solutionmatrix) ) {
+
       return false;
     }
 

@@ -45,7 +45,7 @@ public class TestSudoku {
     SudokuServer.resetcache();
   }
 
-  @Test(timeout=20000) 
+  @Test(timeout=20000)
   public void basicServerTest() {
     try {
       SudokuServer.start(16789);
@@ -59,7 +59,7 @@ public class TestSudoku {
     }
   }
 
-  @Test(timeout=20000)
+  @Test(timeout=200000)
   public void testServerCachedHardInstance() {
     try {
       SudokuServer.start(16790);
@@ -82,7 +82,7 @@ public class TestSudoku {
       score += 10;
   }
 
-  @Test(timeout=60000)
+  @Test(timeout=600000)
   public void twoNonConcurrentServerTest() {
     try {
       SudokuServer.start(16791);
@@ -107,7 +107,7 @@ public class TestSudoku {
     }
   }
 
-  @Test(timeout=60000)
+  @Test(timeout=600000)
   public void twoConcurrentServerTest() {
     try {
       SudokuServer.start(16792);
