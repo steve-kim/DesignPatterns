@@ -7,6 +7,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class Cache {
     private static Map<String, String> cache = new HashMap<String, String>();
+    private static ReentrantReadWriteLock rwl = new ReentrantReadWriteLock(true);
 
     private Cache() {}
 
@@ -19,37 +20,40 @@ public class Cache {
     }
 
     public void put(String key, String value) {
-        synchronized(cache) {
-            cache.put(key, value);
-        }
+        rwl.writeLock().lock();
+        cache.put(key, value);
+        rwl.writeLock().unlock();
     }
 
     public String get(String key) {
-        synchronized(cache) {
-            String partial = cache.get(key);
+        rwl.readLock().lock();
+        String partial = cache.get(key);
+        rwl.readLock().unlock();
 
-            if (partial == null)
-                return null;
-            else
-                return partial;
-        }
+        if (partial == null)
+            return null;
+        else
+            return partial;
     }
 
     public boolean contains(String key) {
-        synchronized (cache) {
-            return cache.containsKey(key);
-        }
+        boolean doesContain;
+        rwl.readLock().lock();
+        doesContain = cache.containsKey(key);
+        rwl.readLock().unlock();
+        return doesContain;
     }
 
     public void remove(String key) {
-        synchronized (cache) {
-            cache.remove(key);
-        }
+        rwl.writeLock().lock();
+        cache.remove(key);
+        rwl.writeLock().unlock();
     }
 
     public int size() {
-        synchronized (cache) {
-            return cache.size();
-        }
+        rwl.readLock().lock();
+        int size = cache.size();
+        rwl.readLock().unlock();
+        return size;
     }
 }
