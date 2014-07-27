@@ -23,14 +23,39 @@ public class SudokuSolver {
 
   public static String solve( String s ) {
         String result = null;
-	//TODOBEGIN(DP)
-
-	//TODOEND(DP)
-	return result;
+	    //TODOBEGIN(DP)
+      System.out.println("Puzzle to solve: " + s);
+        int [][] puzzle = readInput(s);
+      System.out.println("Puzzle to solve: " + s);
+        solvePuzzle(0, 0, puzzle);
+        result = matrixToString(puzzle);
+        System.out.println("Solved puzzle: " + result);
+	    //TODOEND(DP)
+	    return result;
   }
 
 	//TODOBEGIN(DP)
 
+    static boolean solvePuzzle(int i, int j, int[][] cells) {
+//        print("Inside solve; cells: ", cells);
+        if (i == 9) {
+            i = 0;
+            if (++j == 9)
+                return true;
+        }
+        if (cells[i][j] != 0)  // skip filled cells
+            return solvePuzzle(i+1,j,cells);
+
+        for (int val = 1; val <= 9; ++val) {
+            cells[i][j] = val;
+            if (isValid(cells)) {
+                if (solvePuzzle(i+1,j,cells))
+                    return true;
+            }
+        }
+        cells[i][j] = 0; // reset on backtrack
+        return false;
+    }
 	//TODOEND(DP)
 
   public static boolean isLegalSolution( String solution, 

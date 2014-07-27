@@ -27,6 +27,48 @@ public class SudokuServer {
 //TODOBEGIN(DP)
 class ThreadedSudokuServer implements Runnable {
   public void run() {
+      try {
+          ServerSocket ss = new ServerSocket(SudokuServer.PORT);
+          ExecutorService executorService = Executors.newFixedThreadPool(SudokuServer.MAXPARALLELTHREADS);
+
+          while (true) {
+              Socket socket = ss.accept();
+              executorService.execute(new SudokuServiceThread(socket));
+          }
+
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+
   }
+}
+
+class SudokuServiceThread implements Runnable {
+    private Socket socket;
+
+    public SudokuServiceThread(Socket socket) {
+        this.socket = socket;
+    }
+
+    public void run() {
+        try {
+            InputStreamReader is = new InputStreamReader(socket.getInputStream());
+            BufferedReader buf = new BufferedReader(is);
+            PrintWriter dos = new PrintWriter(socket.getOutputStream());
+
+            String fromClient = buf.readLine();
+            System.out.println("From client: " + fromClient);
+            String result = SudokuSolver.solve(fromClient);
+
+            dos.println(result);
+            dos.flush();
+            dos.close();
+            buf.close();
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
 //TODOEND(DP)
