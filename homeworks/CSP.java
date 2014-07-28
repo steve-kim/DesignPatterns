@@ -1,3 +1,9 @@
+/*
+I have modified the smoker classes by making it check only its relevant field first. I.E tobaccoReady only acquire tobacco first.
+Upon receiving a lock, it sets its own status to "true". I.E. tobaccoReady set isTobacco = true
+I then acquire a mutex that locks out the other consumer threads, and polls to see which other resource as been acquired
+The thread is then alerted, and the cigarette is created.
+*/
 import java.util.concurrent.Semaphore;
 import java.util.ArrayList;
 import java.util.List;
