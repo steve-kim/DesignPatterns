@@ -56,4 +56,10 @@ public class Cache {
         rwl.readLock().unlock();
         return size;
     }
+
+    public void clear() {
+        rwl.writeLock().lock();
+        cache.clear();
+        rwl.writeLock().unlock();
+    }
 }

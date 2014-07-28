@@ -13,6 +13,7 @@ public class SudokuServer {
   // subsequent junit tests.
   static void resetcache() {
     //TODOBEGIN(DP)
+    Cache.getInstance().clear();
     //TODOEND(DP)
   }
 
